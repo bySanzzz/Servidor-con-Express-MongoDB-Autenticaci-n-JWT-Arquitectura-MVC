@@ -4,6 +4,9 @@ const getProducts = async (req, res) => {
   try {
     const userLogged = req.userLogged
     const filterProducts = await Product.find({ userId: userLogged.id }, { userId: 0 })
+    if (filterProducts.length === 0){
+      res.status(404).json({ success: false, error: "No hay datos" })
+    }
     res.json({
       success: true,
       data: filterProducts,
@@ -58,13 +61,29 @@ const updateProduct = async (req, res) => {
   try {
     const id = req.params.id
     const body = req.body
+    const userLogged = req.userLogged
+    const product = await Product.findById(id) //Buscamos individualmente el Id del producto
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        error: "Product not found"
+      })
+    }
+    
 
+    if (product.userId.toString() !== userLogged.id) {//Para luego compararlo con el id del usuario logueado tranformandolo en String
+      return res.status(403).json({
+        success: false,
+        error: "No eres el titular para poder modificarlo"
+      })
+    }
     const updatedProduct = await Product.findByIdAndUpdate(id, { ...body, available: body.stock > 0 }, { new: true, projection: { userId: 0 } })
 
     if (!updatedProduct) {
       return res.status(404).json({ success: false, error: "Product not found" })
     }
 
+    
     res.json({
       success: true,
       data: updatedProduct,
@@ -78,17 +97,26 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params
+    const userLogged = req.userLogged
+    const product = await Product.findById(id) //Buscamos individualmente el Id del producto
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        error: "Product not found"
+      })
+    }
+
+    if (product.userId.toString() !== userLogged.id) {//Para luego compararlo con el id del usuario logueado tranformandolo en String
+      return res.status(403).json({
+        success: false,
+        error: "No eres el titular para poder eliminarlo"
+      })
+    }
 
     const deletedProduct = await Product.findByIdAndDelete(id)
 
-    if (!deletedProduct) {
-      return res.status(404).json({ success: false, error: "Product not found" })
-    }
-
-    const product = deletedProduct.toObject()
-    delete product.userId
-
-    const publicDataProduct = { ...deletedProduct }
+    const Deadproduct = deletedProduct.toObject()
+    delete Deadproduct.userId
 
     res.json({ success: true, data: product, message: "Product deleted successfully" })
   } catch (error) {
