@@ -6,7 +6,7 @@ const authMiddleware = (req, res, next) => {
   const header = req.headers.authorization
 
   if (!header || !header.startsWith("Bearer ")) {
-    return res.status(401).json({ success: false, error: "Unauthorized" })
+    return res.status(401).json({ success: false, error: "Desautorizado" })
   }
 
   const token = header.split(" ")[1]

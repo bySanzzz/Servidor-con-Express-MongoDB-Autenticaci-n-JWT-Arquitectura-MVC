@@ -1,12 +1,11 @@
 import express from 'express'
-import { connectDb } from './config/mongoDbConnection.js';
-import { ProductRouter } from './routes/productRouter.js';
-import { AuthRouter } from './routes/authRouter.js';
-import { authMiddleware } from './middlewares/authMiddleware.js';
+import { connectDb } from './config/mongoDbConnection.js'
+import { AlumnoRouter } from './routes/alumnoRouter.js'
+import { AuthRouter } from './routes/authRouter.js'
+import { authMiddleware } from './middlewares/authMiddleware.js'
 import cors from "cors"
-import { config } from 'dotenv';
+import { config } from 'dotenv'
 config()
-
 const entorno = "dev"
 let PORT = 15000
 
@@ -15,16 +14,18 @@ if (entorno === "dev") {
 }
 
 const server = express()
+
 server.use(express.json())
 server.use(cors())
 
 server.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "API REST con Express y MongoDB"
+    message: "Bienvenido al Admin de profesores"
   })
 })
-server.use("/products", authMiddleware, ProductRouter)
+
+server.use("/alumnos", authMiddleware, AlumnoRouter)
 server.use("/auth", AuthRouter)
 
 server.listen(PORT, () => {

@@ -5,7 +5,7 @@ const limiter = rateLimit({
   limit: 5,
 
   handler: (req, res) => {
-    res.status(429).json({ error: "Too many requests, please try again later." })
+    res.status(429).json({ error: "Muchos intentos, prueba mas tarde." })
   }
 })
 
