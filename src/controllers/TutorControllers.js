@@ -1,4 +1,4 @@
-import { Profesor } from "../models/ProfesorModel.js"
+import { Tutor } from "../models/TutorModel.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { config } from "dotenv"
@@ -7,12 +7,12 @@ config()
 const register = async (req, res) => {
   try {
     const { body } = req
-    const { password, nombre, email, especialidad } = body
+    const { password, nombre, email, telefono, role } = body
 
-    const foundProfesor = await Profesor.findOne({ email })
+    const foundTutor = await Tutor.findOne({ email })
 
-    if (foundProfesor) {
-      return res.status(409).json({ success: false, error: "Ya existe cuenta del profesor que quieres ingresar, intenta loguearte" })
+    if (foundTutor) {
+      return res.status(409).json({ success: false, error: "Ya existe cuenta del tutor que quieres ingresar, intenta loguearte" })
     }
 
     const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-]).{8,}$/
@@ -22,27 +22,29 @@ const register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10)
 
-    const newProfesor = await Profesor.create({
+    const newTutor = await Tutor.create({
       nombre,
       email,
-      especialidad,
+      telefono,
       password: hashPassword,
+      role
     })
 
-    newProfesor.save()
+    newTutor.save()
 
-    const publicDataProfesor = {
-      id: newProfesor._id,
-      nombre: newProfesor.nombre,
-      email: newProfesor.email,
-      especialidad: newProfesor.especialidad,
-      createdAt: newProfesor.createdAt,
-      updatedAt: newProfesor.updatedAt
+    const publicDataTutor = {
+      id: newTutor._id,
+      nombre: newTutor.nombre,
+      email: newTutor.email,
+      telefono: newTutor.telefono,
+      role: newTutor.role,
+      createdAt: newTutor.createdAt,
+      updatedAt: newTutor.updatedAt
     }
 
     res.json({
       success: true,
-      data: publicDataProfesor,
+      data: publicDataTutor,
       message: "Usuario registrado exitosamente"
     })
   } catch (error) {
@@ -62,23 +64,24 @@ const login = async (req, res) => {
       return res.status(401).json({ success: false, error: "Desautorizado" })
     }
 
-    const foundProfesor = await Profesor.findOne({ email })
+    const foundTutor = await Tutor.findOne({ email })
 
-    if (!foundProfesor) {
+    if (!foundTutor) {
       return res.status(403).json({ success: false, error: "Desautorizado" })
     }
 
-    const isValid = await bcrypt.compare(password, foundProfesor.password)
+    const isValid = await bcrypt.compare(password, foundTutor.password)
 
     if (!isValid) {
       return res.status(403).json({ success: false, error: "Desautorizado" })
     }
 
     const payload = {
-      id: foundProfesor._id,
-      nombre: foundProfesor.nombre,
-      email: foundProfesor.email,
-      especialidad: foundProfesor.especialidad
+      id: foundTutor._id,
+      nombre: foundTutor.nombre,
+      email: foundTutor.email,
+      telefono: foundTutor.telefono,
+      role: foundTutor.role
     }
 
     const secretKey = process.env.JWT_SECRET

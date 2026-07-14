@@ -12,7 +12,7 @@
     "api",
     "nodejs"
   ],
-  "author": "gabrielalberini",
+  "author": "SantiagoGaleano",
   "license": "ISC",
   "type": "module",
   "dependencies": {

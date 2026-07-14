@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { limiter } from "../middlewares/limiterMiddleware.js"
-import { register, login } from "../controllers/profesorControllers.js"
+import { register, login } from "../controllers/TutorControllers.js"
 
 const AuthRouter = Router()
 
