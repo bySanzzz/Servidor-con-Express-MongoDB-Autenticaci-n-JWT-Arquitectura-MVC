@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { requireRole } from "../middlewares/roleMiddleware.js"
-import { getAlumnos, getAlumno, createAlumno, updateAlumno, deleteAlumno} from "../controllers/alumnoControllers.js"
+import { getAlumnos, getAlumno, createAlumno, updateAlumno, deleteAlumno,getAllAlumnos,deleteAnyAlumno} from "../controllers/alumnoControllers.js"
 
 const AlumnoRouter = Router()
 

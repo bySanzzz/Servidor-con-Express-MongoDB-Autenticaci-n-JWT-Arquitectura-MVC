@@ -1,3 +1,5 @@
+//Verifica el rol de usuario
+
 const requireRole = (...rolesPermitidos) => {
   return (req, res, next) => {
     const userRole = req.userLogged?.role

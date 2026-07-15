@@ -10,11 +10,7 @@ const getAlumnos = async (req, res) => {
       return res.status(404).json({ success: false, error: "No hay Alumnos registrados relacionados a vos" })
     }
 
-    res.json({
-      success: true,
-      data: filterAlumnos,
-      message: "Alumnos encontrados"
-    })
+    res.json({ success: true, data: filterAlumnos, message: "Alumnos encontrados"})
   } catch (error) {
     res.status(500).json({ success: false, error: "Error encontrando a alumnos" })
   }
@@ -51,7 +47,7 @@ const createAlumno = async (req, res) => {
     const body = req.body
     const userLogged = req.userLogged
 
-    const alumnosData = Array.isArray(body) ? body : [body]
+    const alumnosData = Array.isArray(body) ? body : [body] // Se verifica si es un array de varios alumnos o de uno solo
 
     const alumnosConTutor = alumnosData.map(alumno => ({
       dni: alumno.dni,
@@ -144,7 +140,41 @@ const deleteAlumno = async (req, res) => {
     res.status(400).json({ success: false, error: "Id invalido" })
   }
 }
-//ADMIN 
 
 
-export { getAlumnos, getAlumno, createAlumno, updateAlumno, deleteAlumno }
+// PERMISOS DE ADMIN 
+
+const getAllAlumnos = async (req, res) => {
+  try {
+    const allAlumnos = await Alumno.find({}, { tutorId: 0 })
+    if (allAlumnos.length === 0) {
+      return res.status(404).json({ success: false, error: "No hay Alumnos registrados" })
+    }
+    res.json({success: true,data: allAlumnos,message: "Alumnos encontrados"})
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Error encontrando a alumnos" })
+  }
+}
+
+const deleteAnyAlumno = async (req, res) => {
+  try {
+    const { id } = req.params
+    const alumno = await Alumno.findById(id)
+
+    if (!alumno) {
+      return res.status(404).json({ success: false, error: "Alumno no encontrado" })
+    }
+
+    const deletedAlumno = await Alumno.findByIdAndDelete(id)
+
+    const deadAlumno = deletedAlumno.toObject()
+    delete deadAlumno.tutorId
+
+    res.json({ success: true, data: deadAlumno, message: "Alumno eliminado exitosamente" })
+  } catch (error) {
+    res.status(400).json({ success: false, error: "Id invalido" })
+  }
+}
+
+
+export { getAlumnos, getAlumno, createAlumno, updateAlumno, deleteAlumno, deleteAnyAlumno,getAllAlumnos }
