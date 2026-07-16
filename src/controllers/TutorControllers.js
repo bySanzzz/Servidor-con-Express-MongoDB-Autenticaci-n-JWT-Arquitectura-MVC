@@ -2,6 +2,7 @@ import { Tutor } from "../models/TutorModel.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { config } from "dotenv"
+import { z } from "zod"
 config()
 
 const register = async (req, res) => {
@@ -14,12 +15,6 @@ const register = async (req, res) => {
     if (foundTutor) {
       return res.status(409).json({ success: false, error: "Ya existe cuenta del tutor que quieres ingresar, intenta loguearte" })
     }
-
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-]).{8,}$/
-    if (!regex.test(password)) {
-      return res.status(400).json({ success: false, error: "Contraseña no válida. Debe contener al menos 8 caracteres, una letra mayúscula, un número y un carácter especial." })
-    }
-
     const hashPassword = await bcrypt.hash(password, 10)
 
     const newTutor = await Tutor.create({

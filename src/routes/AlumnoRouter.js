@@ -1,18 +1,22 @@
 import { Router } from "express"
 import { requireRole } from "../middlewares/roleMiddleware.js"
+import { validate } from "../middlewares/validateMiddleware.js" 
+import { registerSchema, loginSchema,  } from "../schemas/tutorSchemas.js"
+import { createAlumnoSchema, updateAlumnoSchema } from "../schemas/alumnoSchemas.js"
 import { getAlumnos, getAlumno, createAlumno, updateAlumno, deleteAlumno,getAllAlumnos,deleteAnyAlumno} from "../controllers/alumnoControllers.js"
+
 
 const AlumnoRouter = Router()
 
-
+//Ruta de Administradores del sistema
 AlumnoRouter.get("/all", requireRole("admin"), getAllAlumnos)
 AlumnoRouter.delete("/all/:id", requireRole("admin"), deleteAnyAlumno)
 
-// Rutas normales (dueño del recurso)
+//Ruta de Tutores legales
 AlumnoRouter.get("/", getAlumnos)
 AlumnoRouter.get("/:id", getAlumno)
-AlumnoRouter.post("/", createAlumno)
-AlumnoRouter.patch("/:id", updateAlumno)
+AlumnoRouter.post("/", validate(createAlumnoSchema), createAlumno)   
+AlumnoRouter.patch("/:id", validate(updateAlumnoSchema), updateAlumno) 
 AlumnoRouter.delete("/:id", deleteAlumno)
 
 export { AlumnoRouter }

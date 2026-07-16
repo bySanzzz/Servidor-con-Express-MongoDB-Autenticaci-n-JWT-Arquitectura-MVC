@@ -1,4 +1,6 @@
 import { Schema, model } from "mongoose"
+import { z } from "zod"
+
 
 const alumnoSchema = new Schema({
   dni: { type: Number, required: true, unique: true },

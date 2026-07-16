@@ -21,7 +21,7 @@ server.use(cors())
 server.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Bienvenido al Admin de profesores"
+    message: "Bienvenido al Administrador de estudiantes"
   })
 })
 
