@@ -7,11 +7,21 @@ const validate = (schema, source = "body") => {
         success: false,
         error: result.error.issues.map(issue => ({
           campo: issue.path.join("."),
-          mensaje: "Datos invalidos"
+          mensaje: issue.message
         }))
       })
     }
-    req[source] = result.data
+
+    if (source === "query") {
+      Object.defineProperty(req, "query", {
+        value: result.data,
+        writable: true,
+        configurable: true
+      })
+    } else {
+      req[source] = result.data
+    }
+
     next()
   }
 }

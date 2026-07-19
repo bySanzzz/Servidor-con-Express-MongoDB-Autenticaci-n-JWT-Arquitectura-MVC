@@ -3,7 +3,7 @@ import { z } from "zod"
 const registerSchema = z.object({
   nombre: z.string().min(3, "Campo incompleto"),
   email: z.string().email("Formato de Email inválido"),
-  telefono: z.number("El teléfono debe ser un número" ),
+  telefono: z.number().min(10000000,"El teléfono debe ser un número" ),
   password: z.string()
     .min(8, "La contraseña debe tener al menos 8 caracteres")
     .regex(/[A-Z]/, "Debe contener al menos una mayúscula")

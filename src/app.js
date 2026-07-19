@@ -4,6 +4,7 @@ import { AlumnoRouter } from './routes/alumnoRouter.js'
 import { AuthRouter } from './routes/authRouter.js'
 import { authMiddleware } from './middlewares/authMiddleware.js'
 import cors from "cors"
+import morgan from "morgan"
 import { config } from 'dotenv'
 config()
 const entorno = "dev"
@@ -17,6 +18,7 @@ const server = express()
 
 server.use(express.json())
 server.use(cors())
+server.use(morgan("dev"))
 
 server.get("/", (req, res) => {
   res.status(200).json({

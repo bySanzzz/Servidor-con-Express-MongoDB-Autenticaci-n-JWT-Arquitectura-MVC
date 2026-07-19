@@ -6,6 +6,7 @@ const alumnoBaseSchema = z.object({
   apellido: z.string().min(3),
   edad: z.number().int().positive(),
   curso: z.number().int().min(1).max(7, "El curso debe ser entre 1 y 7")
+
 })
 
 const createAlumnoSchema = z.union([
@@ -13,8 +14,15 @@ const createAlumnoSchema = z.union([
   z.array(alumnoBaseSchema).min(1, "El array no puede estar vacío")
 ])
 
+const queryParamsSchema = z.object({
+  page: z.coerce.number().int().positive().optional().default(1),
+  limit: z.coerce.number().int().positive().optional().default(10),
+  sort: z.enum(["asc", "desc"]).optional(),
+  filter: z.string().optional()
+})
+
 
 const updateAlumnoSchema = alumnoBaseSchema.partial()
 
 
-export {createAlumnoSchema, updateAlumnoSchema }
+export {createAlumnoSchema, updateAlumnoSchema, queryParamsSchema }

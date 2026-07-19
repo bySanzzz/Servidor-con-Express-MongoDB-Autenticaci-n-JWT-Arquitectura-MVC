@@ -3,14 +3,27 @@ import { Alumno } from "../models/AlumnoModel.js"
 const getAlumnos = async (req, res) => {
   try {
     const userLogged = req.userLogged
+    const { page, limit, sort, filter } = req.query
 
-    const filterAlumnos = await Alumno.find({ tutorId: userLogged.id }, { tutorId: 0 })
+    const query = { tutorId: userLogged.id }
 
-    if (filterAlumnos.length === 0) {
-      return res.status(404).json({ success: false, error: "No hay Alumnos registrados relacionados a vos" })
+    if (filter) {
+      const [campo, valor] = filter.split(":")
+      query[campo] = valor
     }
 
-    res.json({ success: true, data: filterAlumnos, message: "Alumnos encontrados"})
+    const sortOption = sort === "desc" ? { createdAt: -1 } : { createdAt: 1 }
+
+    const filterAlumnos = await Alumno.find(query, { tutorId: 0 })
+      .sort(sortOption)
+      .skip((page - 1) * limit)
+      .limit(limit)
+
+    if (filterAlumnos.length === 0) {
+      return res.status(404).json({ success: false, error: "No hay Alumnos registrados" })
+    }
+
+    res.json({ success: true, data: filterAlumnos, message: "Alumnos encontrados", meta: { page, limit }})
   } catch (error) {
     res.status(500).json({ success: false, error: "Error encontrando a alumnos" })
   }
@@ -104,7 +117,6 @@ const updateAlumno = async (req, res) => {
 
     res.json({
       success: true,
-      data: updatedAlumno,
       message: "Alumno actualizado exitosamente"
     })
   } catch (error) {
@@ -135,7 +147,7 @@ const deleteAlumno = async (req, res) => {
     const deadAlumno = deletedAlumno.toObject()
     delete deadAlumno.tutorId
 
-    res.json({ success: true, data: deadAlumno, message: "Alumno eliminado exitosamente" })
+    res.json({ success: true, message: "Alumno eliminado exitosamente" })
   } catch (error) {
     res.status(400).json({ success: false, error: "Id invalido" })
   }
@@ -146,11 +158,26 @@ const deleteAlumno = async (req, res) => {
 
 const getAllAlumnos = async (req, res) => {
   try {
-    const allAlumnos = await Alumno.find({}, { tutorId: 0 })
+    const { page, limit, sort, filter } = req.query
+
+    const query = {}
+
+    if (filter) {
+      const [campo, valor] = filter.split(":")
+      query[campo] = valor
+    }
+
+    const sortOption = sort === "desc" ? { createdAt: -1 } : { createdAt: 1 }
+
+    const allAlumnos = await Alumno.find(query, { tutorId: 0 })
+      .sort(sortOption)
+      .skip((page - 1) * limit)
+      .limit(limit)
     if (allAlumnos.length === 0) {
       return res.status(404).json({ success: false, error: "No hay Alumnos registrados" })
     }
-    res.json({success: true,data: allAlumnos,message: "Alumnos encontrados"})
+
+    res.json({success: true,data: allAlumnos,message: "Alumnos encontrados",meta: { page, limit }})
   } catch (error) {
     res.status(500).json({ success: false, error: "Error encontrando a alumnos" })
   }
@@ -170,7 +197,7 @@ const deleteAnyAlumno = async (req, res) => {
     const deadAlumno = deletedAlumno.toObject()
     delete deadAlumno.tutorId
 
-    res.json({ success: true, data: deadAlumno, message: "Alumno eliminado exitosamente" })
+    res.json({ success: true, message: "Alumno eliminado exitosamente" })
   } catch (error) {
     res.status(400).json({ success: false, error: "Id invalido" })
   }
