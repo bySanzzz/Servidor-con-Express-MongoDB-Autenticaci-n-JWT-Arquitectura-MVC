@@ -1,0 +1,21 @@
+info:
+  name: Get User
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: http://localhost:15000/alumnos
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNWM5YmRmZGY1M2IwYmZhOGRhMDkwYyIsIm5vbWJyZSI6IlNhbnRpYWdvIEdhbGVhbm8iLCJlbWFpbCI6ImFkbWluQGNvbGVnaW8uY29tIiwidGVsZWZvbm8iOjExMjM0NTY3ODksInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4NDQ1NDM0MSwiZXhwIjoxNzg0NDYxNTQxfQ.GVx10Z_U4Ahn9urUCdT7VgFK53eOU5F8mS3RUJWvt3c
+  body:
+    type: xml
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

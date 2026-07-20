@@ -1,0 +1,30 @@
+info:
+  name: Create Alumno
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://localhost:15000/alumnos
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNWM4Y2Q4NGU4MWQ4NDU2NDAzYTU4OCIsIm5vbWJyZSI6Ik1hcnTDrW4gRmVybsOhbmRleiIsImVtYWlsIjoibWFydHNpbi5mZXJuYW5kZXpAZ21haWwuY29tIiwidGVsZWZvbm8iOjExMjM0NTY3ODksInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg0NDUxMTU0LCJleHAiOjE3ODQ0NTgzNTR9.2CnwoXt8e4wxbL3CRHaU-oe8cD07kyZpNycDk3S-swA
+  body:
+    type: json
+    data: |2-
+      
+        {
+          "dni": 1222245678,
+          "nombre": "Juan",
+          "apellido": "Pérez",
+          "edad": 12,
+          "curso": 1,
+          "tutorId": "687a0b3b5d7f4d2c8e9a1234"
+        }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

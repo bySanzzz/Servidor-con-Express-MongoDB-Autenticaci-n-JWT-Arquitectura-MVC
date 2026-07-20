@@ -1,0 +1,24 @@
+info:
+  name: Login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:15000/auth/login
+  body:
+    type: json
+    data: |-
+      {
+        "nombre": "Martín Fernández",
+        "email": "martsin.fernandez@gmail.com",
+        "telefono": 1123456789,
+        "password": "Padre2026#"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

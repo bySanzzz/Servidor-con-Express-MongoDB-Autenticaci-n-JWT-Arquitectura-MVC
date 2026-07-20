@@ -1,0 +1,18 @@
+info:
+  name: Get todos los alumnos Admin
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: http://localhost:15000/alumnos/all
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNWM4Y2Q4NGU4MWQ4NDU2NDAzYTU4OCIsIm5vbWJyZSI6Ik1hcnTDrW4gRmVybsOhbmRleiIsImVtYWlsIjoibWFydHNpbi5mZXJuYW5kZXpAZ21haWwuY29tIiwidGVsZWZvbm8iOjExMjM0NTY3ODksInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg0NDU1Nzg4LCJleHAiOjE3ODQ0NjI5ODh9.G2hEg15MOqMRdxcInY4LQDEhDSaGIsJ9cjpxkcDvVLI
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

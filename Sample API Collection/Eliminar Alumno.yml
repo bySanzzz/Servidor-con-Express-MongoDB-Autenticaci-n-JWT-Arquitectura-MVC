@@ -1,0 +1,18 @@
+info:
+  name: Eliminar Alumno
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: http://localhost:15000/alumnos/6a5ca570947f5b1e41512538
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNWM4Y2Q4NGU4MWQ4NDU2NDAzYTU4OCIsIm5vbWJyZSI6Ik1hcnTDrW4gRmVybsOhbmRleiIsImVtYWlsIjoibWFydHNpbi5mZXJuYW5kZXpAZ21haWwuY29tIiwidGVsZWZvbm8iOjExMjM0NTY3ODksInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg0NDU2NjcxLCJleHAiOjE3ODQ0NjM4NzF9.0aFycTnf42Z3Dmyep2Yz-c0N0j90qivipwA33VceZJM
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
